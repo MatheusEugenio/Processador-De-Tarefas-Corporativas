@@ -32,6 +32,9 @@ public class Tarefa implements Comparable<Tarefa> {
 
     @Override
     public int compareTo(Tarefa o) {
+        if (this.titulo.equalsIgnoreCase(o.getTitulo())){
+
+        }
         return 0;
     }
 

@@ -1,6 +1,6 @@
 package TesteExecutaveis;
 
-public class Exec {
+public class ExecuteTest {
     public static void main(String[] args) {
 
     }

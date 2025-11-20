@@ -2,15 +2,14 @@ package FerramentaPersistencia;
 
 import Exceptions.TarefaInvalidException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.function.Function;
 
 public class Persistencia<T>{
 
     public void save(List<T> dados, String caminho) throws TarefaInvalidException, IOException {
+        carregar();
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(caminho))){
 
@@ -32,4 +31,11 @@ public class Persistencia<T>{
     public void carregar(Function<String, T> conversor){
 
     }
+
+    public void carregar(){
+        //percorrer oque tem no arquivo e joga na lista, assim atualiazando a lista sempre que rodar o programa
+
+
+    }
+
 }
