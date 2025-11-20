@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 public class Persistencia<T>{
 
-    public void save(List<T> dados, String caminho) throws TarefaInvalidException, IOException {
+    public void save(List<T> dados, String caminho) throws IOException {
         carregar();
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(caminho))){
