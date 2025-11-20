@@ -1,5 +1,6 @@
 package Gerenciador;
 
+import Exceptions.TarefaInvalidException;
 import ObjetoDeManipulacao.Tarefa;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,11 +9,16 @@ public class GerenciadorDeTarefas {
 
     private Set<Tarefa> listaDeTarefas = new HashSet<>();
 
-    void add(Tarefa tarefa){
-        this.listaDeTarefas.add(tarefa);
+    void add(Tarefa tarefa) throws TarefaInvalidException{ //lançar exception personalizada
+
+        try {
+            this.listaDeTarefas.add(tarefa);
+        }catch (Exception e){
+            throw new TarefaInvalidException("A tarefa passada como parâmetro é inválida");
+        }
     }
 
-    void remove(Tarefa tarefa){
+    void remove(Tarefa tarefa){ //lançar exception personalizada
         this.listaDeTarefas.remove(tarefa);
     }
 
@@ -24,11 +30,11 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.forEach(System.out::println);
     }
 
-    void acessarTarefa(Tarefa tarefa){
+    void acessarTarefa(Tarefa tarefa){ //lançar exception personalizada
 
     }
 
-    void acessarTarefa(String nomeTarefa){
+    void acessarTarefa(String nomeTarefa){ //lançar exception personalizada
 
     }
 }
