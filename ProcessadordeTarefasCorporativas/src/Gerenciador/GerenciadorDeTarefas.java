@@ -9,10 +9,10 @@ import java.util.Set;
 public class GerenciadorDeTarefas {
 
     private Set<Tarefa> listaDeTarefas = new HashSet<>();
-    private Persistencia<Tarefa> persistencia;
+    //private Persistencia<Tarefa> persistencia;
 
     public GerenciadorDeTarefas(){
-        this.persistencia = new Persistencia<>();
+        //this.persistencia = new Persistencia<>();
     }
 
     public void add(Tarefa tarefa) throws NullPointerException{
