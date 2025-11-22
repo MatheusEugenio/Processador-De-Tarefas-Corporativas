@@ -1,10 +1,10 @@
 package Gerenciador;
-
 import Exceptions.ErrorGeralExeception;
 import Exceptions.TarefaInvalidException;
 import ObjetoDeManipulacao.Tarefa;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GerenciadorDeTarefas {
 
@@ -24,6 +24,13 @@ public class GerenciadorDeTarefas {
         }
 
         this.listaDeTarefas.add(tarefa);
+
+        if (!categoriasUnicas.contains(tarefa.getCategoria())){
+            this.categoriasUnicas.add(tarefa.getCategoria());
+        }
+
+        ordenarPorCategoria();
+        ordenarPorUrgencia();
     }
 
     public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception{
@@ -36,6 +43,9 @@ public class GerenciadorDeTarefas {
         }
 
         this.listaDeTarefas.remove(tarefa);
+
+        ordenarPorCategoria();
+        ordenarPorUrgencia();
     }
 
     public void remove(String nomeTarefa) throws TarefaInvalidException{
@@ -44,6 +54,8 @@ public class GerenciadorDeTarefas {
         }
 
         boolean removeu = this.listaDeTarefas.removeIf(t -> t.getTitulo().equalsIgnoreCase(nomeTarefa));
+        ordenarPorCategoria();
+        ordenarPorUrgencia();
 
         if (removeu) {
             System.out.println("Tarefa: \""+nomeTarefa+ "\" removida com sucesso!");
@@ -63,26 +75,15 @@ public class GerenciadorDeTarefas {
                 .forEach(System.out::println);
     }
 
-    public Tarefa acessarTarefa(Tarefa tarefa)throws ErrorGeralExeception,TarefaInvalidException{
-        if (tarefa == null ) {
-            throw new ErrorGeralExeception("Tarefa de referência nula!");
-        }
-
-        if (!listaDeTarefas.contains(tarefa)) {
-            throw new TarefaInvalidException("Impossível de acessar, a tarefa de referência não existe dentro da lista!");
-        }else {
-            return tarefa;
-        }
+    private void ordenarPorUrgencia(){
+        this.tarefasPorUrgencia = this.listaDeTarefas.stream()
+                                        .sorted()
+                                        .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public Tarefa acessarTarefa(String nomeTarefa) throws TarefaInvalidException{
-        if (nomeTarefa.isBlank()){
-            throw new TarefaInvalidException("Referência de Tarefa inválida!");
-        }
-
-        return this.listaDeTarefas.stream()
-                .filter(t -> t.getTitulo().equalsIgnoreCase(nomeTarefa))
-                .findFirst()
-                .orElseThrow(() -> new TarefaInvalidException("Tarefa '" + nomeTarefa + "' não encontrada."));
+    private void ordenarPorCategoria() {
+       this.categoriasUnicas = this.listaDeTarefas.stream()
+                                .map(Tarefa::getCategoria)
+                                .collect(Collectors.toSet());
     }
 }
