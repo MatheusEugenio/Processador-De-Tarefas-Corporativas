@@ -8,6 +8,12 @@ public class Tarefa implements Comparable<Tarefa> {
     private String titulo;
     private String categoria; //
     private String prioridade ; // Alto: urgente com prazos | Médio nem tão urgente nem tão menos importante | Baixo: baixa urgencia
+    private static final Map<String, Integer> valor_Prioridade = Map.of(
+            "alta", 1,
+            "média", 2,
+            "media", 2,
+            "baixa", 3
+    );
 
     public Tarefa(String titulo, String categoria, String prioridade) {
         this.titulo = titulo;
@@ -18,9 +24,8 @@ public class Tarefa implements Comparable<Tarefa> {
     public Tarefa(String titulo, String categoria) {
         this.titulo = titulo;
         this.categoria = categoria;
-        this.prioridade = "Baixa";
+        this.prioridade = "baixa";
     }
-
 
     public String getTitulo(){ return titulo;}
     public String getCategoria(){ return categoria;}
@@ -29,23 +34,25 @@ public class Tarefa implements Comparable<Tarefa> {
 
     @Override
     public String toString() {
-        return "Titulo da Tarefa= " + titulo + " | Categoria= " + categoria +" | Prioridade= " + prioridade;
+        return titulo + " | " + categoria +" | " + prioridade;
     }
 
     @Override
     public int compareTo(Tarefa o) {
-        Map<String, Integer> prioridade = Map.of(
-                "Alta", 1,
-                "Média", 2,
-                "Baixa", 3
-        );
 
-     /*   if ((this.prioridade.equalsIgnoreCase("Baixa") ||
-                this.prioridade.equalsIgnoreCase("Média"))
-                && o.prioridade.equalsIgnoreCase("Alta")) {
-            o.
-        }*/
-        return 0;
+        String thisPrioridade = (this.prioridade == null) ? "baixa" : this.prioridade.toLowerCase();
+        String oPrioridade = (o.prioridade == null) ? "baixa" : o.prioridade.toLowerCase();
+
+        int valueThis = valor_Prioridade.getOrDefault(thisPrioridade, 3);
+        int valueO = valor_Prioridade.getOrDefault(oPrioridade, 3);
+
+        int comparacao = Integer.compare(valueThis, valueO);
+
+        if (comparacao != 0){
+            return comparacao;
+        }else {
+            return this.titulo.compareToIgnoreCase(o.titulo);
+        }
     }
 
     @Override

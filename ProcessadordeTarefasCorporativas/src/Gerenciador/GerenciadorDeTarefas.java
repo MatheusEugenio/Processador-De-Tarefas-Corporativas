@@ -58,7 +58,9 @@ public class GerenciadorDeTarefas {
             return;
         }
 
-        this.listaDeTarefas.forEach(System.out::println);
+        this.listaDeTarefas.stream()
+                .sorted()
+                .forEach(System.out::println);
     }
 
     public Tarefa acessarTarefa(Tarefa tarefa)throws ErrorGeralExeception,TarefaInvalidException{
