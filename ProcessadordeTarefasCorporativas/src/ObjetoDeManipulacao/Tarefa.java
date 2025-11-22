@@ -40,18 +40,25 @@ public class Tarefa implements Comparable<Tarefa> {
     @Override
     public int compareTo(Tarefa o) {
 
-        String thisPrioridade = (this.prioridade == null) ? "baixa" : this.prioridade.toLowerCase();
+        String thisPrioridade = (this.prioridade == null) ? "baixa" : this.prioridade.toLowerCase(); /*VERIFICA SE A PRIORIDADE DA CLASSE É NULL:
+                                                                                                   SE SIM{RETORNA A STRING baixa QUE VAI SER USADA COMO CHAVE
+                                                                                                   PARA ACESSAR O MAP DE PRIORIDADES}
+                                                                                                   SE NÃO{DEIXA A PRIORIDADE TODA MINUSCULA PARA PADRONIZAR} */
         String oPrioridade = (o.prioridade == null) ? "baixa" : o.prioridade.toLowerCase();
 
-        int valueThis = valor_Prioridade.getOrDefault(thisPrioridade, 3);
+        int valueThis = valor_Prioridade.getOrDefault(thisPrioridade, 3); /*ACESSA O MAP ATRAVÉS DE "valor_Prioridade" PARA RETORNA O VALOR QUE
+                                                                                        ESTÁ ATRELADO A CHAVE, SE NÃO ACHAR, RETORNA 3 -> VALOR BAIXO*/
         int valueO = valor_Prioridade.getOrDefault(oPrioridade, 3);
 
-        int comparacao = Integer.compare(valueThis, valueO);
+        int comparacao = Integer.compare(valueThis, valueO); /*COMPARA OS VALORES:
+                                                               SE O 1° É MAIOR QUE O 2°: RETORNA 1;
+                                                               SE O 2° É MAIOR QUE O 1°: RETORNA -1;
+                                                               SE OS DOIS FOREM IGUAIS: RETORNA 0;*/
 
         if (comparacao != 0){
             return comparacao;
         }else {
-            return this.titulo.compareToIgnoreCase(o.titulo);
+            return this.titulo.compareToIgnoreCase(o.titulo); //faz a comparação de ordem alfabética
         }
     }
 
