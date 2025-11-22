@@ -1,31 +1,34 @@
 package Gerenciador;
 
+import Exceptions.ErrorGeralExeception;
 import Exceptions.TarefaInvalidException;
-import FerramentaPersistencia.Persistencia;
 import ObjetoDeManipulacao.Tarefa;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 
 public class GerenciadorDeTarefas {
 
-    private Set<Tarefa> listaDeTarefas = new HashSet<>();
-    //private Persistencia<Tarefa> persistencia;
+    private List<Tarefa> listaDeTarefas;
+    private Set<String> categoriasUnicas;
+    private Queue<Tarefa> tarefasPorUrgencia;
 
     public GerenciadorDeTarefas(){
-        //this.persistencia = new Persistencia<>();
+        this.listaDeTarefas = new ArrayList<>();
+        this.categoriasUnicas = new HashSet<>();
+        this.tarefasPorUrgencia = new PriorityQueue<>();
     }
 
-    public void add(Tarefa tarefa) throws NullPointerException{
+    public void add(Tarefa tarefa) throws ErrorGeralExeception {
         if (tarefa == null){
-            throw new NullPointerException("Tarefa passada como referência é nula!");
+            throw new ErrorGeralExeception("Tarefa passada como referência é nula!");
         }
 
         this.listaDeTarefas.add(tarefa);
     }
 
-    public void remove(Tarefa tarefa) throws TarefaInvalidException, NullPointerException{
+    public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception{
         if (tarefa == null ) {
-            throw new NullPointerException("Tarefa de referência nula!");
+            throw new ErrorGeralExeception("Tarefa de referência nula!");
         }
 
         if (!listaDeTarefas.contains(tarefa)) {
@@ -58,11 +61,26 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.forEach(System.out::println);
     }
 
-    public void acessarTarefa(Tarefa tarefa)throws TarefaInvalidException{ //lançar exception personalizada
+    public Tarefa acessarTarefa(Tarefa tarefa)throws ErrorGeralExeception,TarefaInvalidException{
+        if (tarefa == null ) {
+            throw new ErrorGeralExeception("Tarefa de referência nula!");
+        }
 
+        if (!listaDeTarefas.contains(tarefa)) {
+            throw new TarefaInvalidException("Impossível de acessar, a tarefa de referência não existe dentro da lista!");
+        }else {
+            return tarefa;
+        }
     }
 
-    public void acessarTarefa(String nomeTarefa) throws TarefaInvalidException{ //lançar exception personalizada
+    public Tarefa acessarTarefa(String nomeTarefa) throws TarefaInvalidException{
+        if (nomeTarefa.isBlank()){
+            throw new TarefaInvalidException("Referência de Tarefa inválida!");
+        }
 
+        return this.listaDeTarefas.stream()
+                .filter(t -> t.getTitulo().equalsIgnoreCase(nomeTarefa))
+                .findFirst()
+                .orElseThrow(() -> new TarefaInvalidException("Tarefa '" + nomeTarefa + "' não encontrada."));
     }
 }

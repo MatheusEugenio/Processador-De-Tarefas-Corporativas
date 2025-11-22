@@ -1,12 +1,13 @@
 package ObjetoDeManipulacao;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Tarefa implements Comparable<Tarefa> {
 
     private String titulo;
     private String categoria; //
-    private String prioridade;
+    private String prioridade ; // Alto: urgente com prazos | Médio nem tão urgente nem tão menos importante | Baixo: baixa urgencia
 
     public Tarefa(String titulo, String categoria, String prioridade) {
         this.titulo = titulo;
@@ -20,6 +21,7 @@ public class Tarefa implements Comparable<Tarefa> {
         this.prioridade = "Baixa";
     }
 
+
     public String getTitulo(){ return titulo;}
     public String getCategoria(){ return categoria;}
     public String getPrioridade(){ return prioridade;}
@@ -32,9 +34,17 @@ public class Tarefa implements Comparable<Tarefa> {
 
     @Override
     public int compareTo(Tarefa o) {
-        if (this.titulo.equalsIgnoreCase(o.getTitulo())){
+        Map<String, Integer> prioridade = Map.of(
+                "Alta", 1,
+                "Média", 2,
+                "Baixa", 3
+        );
 
-        }
+     /*   if ((this.prioridade.equalsIgnoreCase("Baixa") ||
+                this.prioridade.equalsIgnoreCase("Média"))
+                && o.prioridade.equalsIgnoreCase("Alta")) {
+            o.
+        }*/
         return 0;
     }
 
