@@ -26,6 +26,7 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.add(tarefa);
         this.categoriasUnicas.add(tarefa.getCategoria());
         this.tarefasPorPrioridade.add(tarefa);
+        System.out.println("Tarefa adicionada com sucesso!");
     }
 
     public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception{
@@ -40,6 +41,7 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.remove(tarefa);
         this.tarefasPorPrioridade.remove(tarefa);
         atualizacao_da_Lista_de_Categoria();
+        System.out.println("Tarefa removida com sucesso!");
     }
 
     public void remove(String nomeTarefa) throws TarefaInvalidException{
@@ -64,10 +66,11 @@ public class GerenciadorDeTarefas {
 
     public void exibirLista(){
         if (this.listaDeTarefas.isEmpty()) {
-            System.out.println("Tarefa Lista vazia!");
+            System.out.println("\nTarefa Lista vazia!");
             return;
         }
 
+        System.out.println("\n");
         this.tarefasPorPrioridade.forEach(System.out::println);
     }
 

@@ -1,10 +1,9 @@
 package TesteExecutaveis;
 
-import Exceptions.TarefaInvalidException;
 import Gerenciador.GerenciadorDeTarefas;
 import ObjetoDeManipulacao.Tarefa;
 
-public class ExecuteTest {
+public class TestGerenciador {
     public static void main(String[] args) {
         GerenciadorDeTarefas  ger = new GerenciadorDeTarefas();
 
@@ -17,15 +16,14 @@ public class ExecuteTest {
             ger.add(tarefa1);
             ger.add(tarefa2);
             ger.add(tarefa3);
-            ger.add(tarefa4);
 
             ger.exibirLista();
 
-/*      } catch (TarefaInvalidException e) {
-//            System.out.println("ERRO: "+ e.getMessage());
-      */} catch (Exception e) {
-            System.out.print("ERRO GERAL: ");
-            e.printStackTrace();
+            ger.remove(tarefa1);
+
+            ger.exibirLista();
+        } catch (Exception e) {
+            System.out.print("ERRO GERAL: "+e.getMessage());
         }
     }
 }
