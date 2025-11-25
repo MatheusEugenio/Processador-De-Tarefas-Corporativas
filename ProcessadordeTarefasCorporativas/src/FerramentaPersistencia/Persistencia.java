@@ -1,5 +1,7 @@
 package FerramentaPersistencia;
 
+import Exceptions.TarefaInvalidException;
+
 import java.io.*;
 import java.util.List;
 import java.util.function.Function;
@@ -12,24 +14,20 @@ public class Persistencia<T>{
         this.caminho = caminho;
     }
 
-    public void salvar(List<T> dados) throws IOException {
-        //carregar();
+    public void salvar(List<T> tarefas) throws TarefaInvalidException,IOException {
 
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(this.caminho))){
-
-            int i = 0;
-            while (!dados.isEmpty()) {
-                writer.write(dados.get(i).toString());
-                writer.newLine();
-                i++;
-            }
-
-            writer.flush();
-
-            System.out.println("Salvo com sucesso!");
-        } catch (IOException e) {
-            throw new IOException(e);
+        if (tarefas.isEmpty()){
+            throw new TarefaInvalidException("Lista vazia, nada para salvar!");
         }
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(this.caminho, true))){
+            for (T tarefa : tarefas) {
+                writer.write(tarefa.toString());
+                writer.newLine();
+            }
+            writer.flush();
+        }
+
     }
 
     public void carregar(){
@@ -53,5 +51,12 @@ public class Persistencia<T>{
 
 
     }
+
+    /*private Tarefa parseTarefa(){
+
+        return ;//new Tarefa();
+
+    }
+     */
 
 }

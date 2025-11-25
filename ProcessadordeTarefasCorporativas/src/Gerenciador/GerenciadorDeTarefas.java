@@ -1,6 +1,7 @@
 package Gerenciador;
 import Exceptions.ErrorGeralExeception;
 import Exceptions.TarefaInvalidException;
+import FerramentaPersistencia.Persistencia;
 import ObjetoDeManipulacao.Tarefa;
 
 import java.util.*;
@@ -16,6 +17,7 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas = new ArrayList<>();
         this.set_de_Categorias = new HashSet<>();
         this.tarefasPorPrioridade = new PriorityQueue<>();
+
     }
 
     public void add(Tarefa tarefa) throws ErrorGeralExeception {
@@ -26,6 +28,7 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.add(tarefa);
         this.set_de_Categorias.add(tarefa.getCategoria());
         this.tarefasPorPrioridade.add(tarefa);
+        //salvar();
         System.out.println("Tarefa adicionada com sucesso!");
     }
 
