@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 public class GerenciadorDeTarefas {
 
     private List<Tarefa> listaDeTarefas;
-    private Set<String> categoriasUnicas;
+    private Set<String> set_de_Categorias;
     private Queue<Tarefa> tarefasPorPrioridade;
 
     public GerenciadorDeTarefas(){
         this.listaDeTarefas = new ArrayList<>();
-        this.categoriasUnicas = new HashSet<>();
+        this.set_de_Categorias = new HashSet<>();
         this.tarefasPorPrioridade = new PriorityQueue<>();
     }
 
@@ -24,7 +24,7 @@ public class GerenciadorDeTarefas {
         }
 
         this.listaDeTarefas.add(tarefa);
-        this.categoriasUnicas.add(tarefa.getCategoria());
+        this.set_de_Categorias.add(tarefa.getCategoria());
         this.tarefasPorPrioridade.add(tarefa);
         System.out.println("Tarefa adicionada com sucesso!");
     }
@@ -75,7 +75,7 @@ public class GerenciadorDeTarefas {
     }
 
     private void atualizacao_da_Lista_de_Categoria() {
-       this.categoriasUnicas = this.listaDeTarefas.stream()
+       this.set_de_Categorias = this.listaDeTarefas.stream()
                                 .map(Tarefa::getCategoria)
                                 .collect(Collectors.toSet());
     }
