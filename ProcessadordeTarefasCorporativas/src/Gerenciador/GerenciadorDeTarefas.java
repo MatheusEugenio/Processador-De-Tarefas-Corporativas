@@ -10,12 +10,12 @@ public class GerenciadorDeTarefas {
 
     private List<Tarefa> listaDeTarefas;
     private Set<String> categoriasUnicas;
-    private Queue<Tarefa> tarefasPorUrgencia;
+    private Queue<Tarefa> tarefasPorPrioridade;
 
     public GerenciadorDeTarefas(){
         this.listaDeTarefas = new ArrayList<>();
         this.categoriasUnicas = new HashSet<>();
-        this.tarefasPorUrgencia = new PriorityQueue<>();
+        this.tarefasPorPrioridade = new PriorityQueue<>();
     }
 
     public void add(Tarefa tarefa) throws ErrorGeralExeception {
@@ -24,13 +24,8 @@ public class GerenciadorDeTarefas {
         }
 
         this.listaDeTarefas.add(tarefa);
-
-        if (!categoriasUnicas.contains(tarefa.getCategoria())){
-            this.categoriasUnicas.add(tarefa.getCategoria());
-        }
-
-        ordenarPorCategoria();
-        ordenarPorUrgencia();
+        this.categoriasUnicas.add(tarefa.getCategoria());
+        this.tarefasPorPrioridade.add(tarefa);
     }
 
     public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception{
@@ -43,9 +38,8 @@ public class GerenciadorDeTarefas {
         }
 
         this.listaDeTarefas.remove(tarefa);
-
-        ordenarPorCategoria();
-        ordenarPorUrgencia();
+        this.tarefasPorPrioridade.remove(tarefa);
+        atualizacao_da_Lista_de_Categoria();
     }
 
     public void remove(String nomeTarefa) throws TarefaInvalidException{
@@ -53,11 +47,15 @@ public class GerenciadorDeTarefas {
             throw new TarefaInvalidException("Referência de Tarefa inválida!");
         }
 
-        boolean removeu = this.listaDeTarefas.removeIf(t -> t.getTitulo().equalsIgnoreCase(nomeTarefa));
-        ordenarPorCategoria();
-        ordenarPorUrgencia();
+        Tarefa tarefa_alvo = this.listaDeTarefas.stream()
+                .filter(t -> t.getTitulo().equalsIgnoreCase(nomeTarefa))
+                .findFirst()
+                .orElseThrow(null);
 
-        if (removeu) {
+        if (tarefa_alvo != null) {
+            this.listaDeTarefas.remove(tarefa_alvo);
+            this.tarefasPorPrioridade.remove(tarefa_alvo);
+            atualizacao_da_Lista_de_Categoria();
             System.out.println("Tarefa: \""+nomeTarefa+ "\" removida com sucesso!");
         }else {
             throw new TarefaInvalidException("Referência de Tarefa inválida!");
@@ -70,18 +68,10 @@ public class GerenciadorDeTarefas {
             return;
         }
 
-        this.listaDeTarefas.stream()
-                .sorted()
-                .forEach(System.out::println);
+        this.tarefasPorPrioridade.forEach(System.out::println);
     }
 
-    private void ordenarPorUrgencia(){
-        this.tarefasPorUrgencia = this.listaDeTarefas.stream()
-                                        .sorted()
-                                        .collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    private void ordenarPorCategoria() {
+    private void atualizacao_da_Lista_de_Categoria() {
        this.categoriasUnicas = this.listaDeTarefas.stream()
                                 .map(Tarefa::getCategoria)
                                 .collect(Collectors.toSet());
