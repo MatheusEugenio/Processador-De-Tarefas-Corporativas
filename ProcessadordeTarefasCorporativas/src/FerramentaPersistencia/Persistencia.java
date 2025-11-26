@@ -32,19 +32,26 @@ public class Persistencia<T>{
 
     }
 
-    public void carregar(List<Tarefa> lista){
+    public void carregar(List<Tarefa> lista) {
         try(BufferedReader reader = new BufferedReader(new FileReader(this.caminho))){
 
             String linha;
-            while(!(linha = reader.readLine()).isEmpty()){
+            while((linha = reader.readLine()) != null){
+                if (linha.trim().isEmpty()){
+                    continue;
+                }
+                try{
                     Tarefa tarefa_Nova = parseTarefa(linha);
-                    lista.add(tarefa_Nova);
+                    if (tarefa_Nova != null) {
+                        lista.add(tarefa_Nova);
+                    }
+                }catch (TarefaInvalidException e){
+                    System.out.println("Erro ao passar a Tarefa para a lista!");
+                }
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (TarefaInvalidException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao carregar as Tarefas!");
         }
     }
 

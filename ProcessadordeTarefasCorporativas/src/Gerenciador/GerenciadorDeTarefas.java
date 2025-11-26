@@ -4,6 +4,7 @@ import Exceptions.TarefaInvalidException;
 import FerramentaPersistencia.Persistencia;
 import ObjetoDeManipulacao.Tarefa;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,15 +13,16 @@ public class GerenciadorDeTarefas {
     private List<Tarefa> listaDeTarefas;
     private Set<String> set_de_Categorias;
     private Queue<Tarefa> tarefasPorPrioridade;
+    private Persistencia<Tarefa> persistencia;
 
-    public GerenciadorDeTarefas(){
+    public GerenciadorDeTarefas(String caminho){
         this.listaDeTarefas = new ArrayList<>();
         this.set_de_Categorias = new HashSet<>();
         this.tarefasPorPrioridade = new PriorityQueue<>();
-        //carregar();
+        this.persistencia = new Persistencia<>(caminho);
     }
 
-    public void add(Tarefa tarefa) throws ErrorGeralExeception {
+    public void add(Tarefa tarefa) throws ErrorGeralExeception, IOException, TarefaInvalidException {
         if (tarefa == null){
             throw new ErrorGeralExeception("Tarefa passada como referência é nula!");
         }
@@ -28,11 +30,12 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.add(tarefa);
         this.set_de_Categorias.add(tarefa.getCategoria());
         this.tarefasPorPrioridade.add(tarefa);
-        //salvar();
+
+        persistencia.salvar(this.listaDeTarefas);
         System.out.println("Tarefa adicionada com sucesso!");
     }
 
-    public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception{
+    public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception, IOException {
         if (tarefa == null ) {
             throw new ErrorGeralExeception("Tarefa de referência nula!");
         }
@@ -44,11 +47,11 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.remove(tarefa);
         this.tarefasPorPrioridade.remove(tarefa);
         atualizacao_da_Lista_de_Categoria();
-        //salvar()
+        persistencia.salvar(this.listaDeTarefas);
         System.out.println("Tarefa removida com sucesso!");
     }
 
-    public void remove(String nomeTarefa) throws TarefaInvalidException{
+    public void remove(String nomeTarefa) throws TarefaInvalidException, IOException {
         if (nomeTarefa.isBlank()){
             throw new TarefaInvalidException("Referência de Tarefa inválida!");
         }
@@ -62,6 +65,7 @@ public class GerenciadorDeTarefas {
             this.listaDeTarefas.remove(tarefa_alvo);
             this.tarefasPorPrioridade.remove(tarefa_alvo);
             atualizacao_da_Lista_de_Categoria();
+            persistencia.salvar(this.listaDeTarefas);
             //salvar()
             System.out.println("Tarefa: \""+nomeTarefa+ "\" removida com sucesso!");
         }else {

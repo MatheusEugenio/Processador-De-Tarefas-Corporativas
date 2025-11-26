@@ -5,7 +5,8 @@ import ObjetoDeManipulacao.Tarefa;
 
 public class TestGerenciador {
     public static void main(String[] args) {
-        GerenciadorDeTarefas  ger = new GerenciadorDeTarefas();
+
+        GerenciadorDeTarefas ger = new GerenciadorDeTarefas("");
 
         try {
             Tarefa tarefa1 = new Tarefa("Beber Água", "Dia", "Baixa");
