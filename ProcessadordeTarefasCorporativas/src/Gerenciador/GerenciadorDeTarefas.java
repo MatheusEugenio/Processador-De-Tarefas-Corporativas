@@ -19,6 +19,7 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas = new ArrayList<>();
         this.set_de_Categorias = new HashSet<>();
         this.tarefasPorPrioridade = new PriorityQueue<>();
+
         this.persistencia = new Persistencia<>(caminho);
     }
 
@@ -47,6 +48,7 @@ public class GerenciadorDeTarefas {
         this.listaDeTarefas.remove(tarefa);
         this.tarefasPorPrioridade.remove(tarefa);
         atualizacao_da_Lista_de_Categoria();
+
         persistencia.salvar(this.listaDeTarefas);
         System.out.println("Tarefa removida com sucesso!");
     }
@@ -65,8 +67,8 @@ public class GerenciadorDeTarefas {
             this.listaDeTarefas.remove(tarefa_alvo);
             this.tarefasPorPrioridade.remove(tarefa_alvo);
             atualizacao_da_Lista_de_Categoria();
+
             persistencia.salvar(this.listaDeTarefas);
-            //salvar()
             System.out.println("Tarefa: \""+nomeTarefa+ "\" removida com sucesso!");
         }else {
             throw new TarefaInvalidException("Referência de Tarefa inválida!");
