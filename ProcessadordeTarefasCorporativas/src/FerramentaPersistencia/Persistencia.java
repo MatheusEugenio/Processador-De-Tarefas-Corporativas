@@ -1,6 +1,8 @@
 package FerramentaPersistencia;
 
+import Exceptions.ErrorGeralExeception;
 import Exceptions.TarefaInvalidException;
+import ObjetoDeManipulacao.Tarefa;
 
 import java.io.*;
 import java.util.List;
@@ -30,33 +32,48 @@ public class Persistencia<T>{
 
     }
 
-    public void carregar(){
-        //percorrer oque tem no arquivo e joga na lista, assim atualiazando a lista sempre que rodar o programa
-        File file = new File(this.caminho);
-        if (file.exists()) {
-
-        }
-
+    public void carregar(List<Tarefa> lista){
         try(BufferedReader reader = new BufferedReader(new FileReader(this.caminho))){
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            String linha;
+            while(!(linha = reader.readLine()).isEmpty()){
+                    Tarefa tarefa_Nova = parseTarefa(linha);
+                    lista.add(tarefa_Nova);
+            }
+
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (TarefaInvalidException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void carregar(Function<String, T> conversor){
+    public void carregar(Function<String, T> conversor, List<Tarefa> lista){
 
 
 
     }
 
-    /*private Tarefa parseTarefa(){
+    private Tarefa parseTarefa(String linha) throws TarefaInvalidException,ErrorGeralExeception{
+        if (linha == null || linha.isBlank()){
+            return null;
+        }
 
-        return ;//new Tarefa();
+        String[] linha_quebrada = linha.split("\\|");
 
+        if (linha_quebrada.length < 3){
+            throw new ErrorGeralExeception("Linha do arquivo mal formatada: "  + linha);
+        }
+
+        String titulo_da_tarefa_quebrada = linha_quebrada[0].trim();
+        String categoria_da_tarefa_quebrada = linha_quebrada[1].trim();
+        String prioridade_da_tarefa_quebrada = linha_quebrada[2].trim();
+
+        if (!titulo_da_tarefa_quebrada.isEmpty() && !categoria_da_tarefa_quebrada.isEmpty() && !prioridade_da_tarefa_quebrada.isEmpty()) {
+            return new Tarefa(titulo_da_tarefa_quebrada, categoria_da_tarefa_quebrada, prioridade_da_tarefa_quebrada);
+        }
+
+        throw new TarefaInvalidException("Erro ao criar e retornar, algum atributo da Tarefa falhou!");
     }
-     */
 
 }
