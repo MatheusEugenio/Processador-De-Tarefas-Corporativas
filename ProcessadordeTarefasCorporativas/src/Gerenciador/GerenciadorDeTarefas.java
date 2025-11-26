@@ -28,13 +28,15 @@ public class GerenciadorDeTarefas {
             throw new ErrorGeralExeception("Tarefa passada como referência é nula!");
         }
 
+        if (tarefa.getTitulo().isBlank() && tarefa.getCategoria().isBlank() && tarefa.getPrioridade().isBlank()){
+            throw new ErrorGeralExeception("Tarefa passada como referência é totalmente vazia!");
+        }
+
         this.listaDeTarefas.add(tarefa);
         this.set_de_Categorias.add(tarefa.getCategoria());
-        this.tarefasPorPrioridade.add(tarefa);
+        adicionar_tarefa_sem_repeticao(tarefa);
 
         persistencia.salvar(this.listaDeTarefas);
-
-        System.out.println("\nTarefa adicionada com sucesso!");
     }
 
     public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception, IOException {
@@ -60,6 +62,15 @@ public class GerenciadorDeTarefas {
             throw new TarefaInvalidException("Referência de Tarefa inválida!");
         }
 
+        boolean existe_na_lista = this.listaDeTarefas.stream()
+                .map(Tarefa::getTitulo)
+                .anyMatch(t -> t.equalsIgnoreCase(nomeTarefa));
+
+        if (!existe_na_lista) {
+            throw new TarefaInvalidException("Tarefa de referência não existe dentro da lista!");
+        }
+
+        // resgata a tarefa que vai ser removida
         Tarefa tarefa_alvo = this.listaDeTarefas.stream()
                 .filter(t -> t.getTitulo().equalsIgnoreCase(nomeTarefa))
                 .findFirst()
@@ -86,7 +97,9 @@ public class GerenciadorDeTarefas {
 
         System.out.println("\n");
         System.out.println("=== Lista de Tarefas ===");
-        this.tarefasPorPrioridade.forEach(System.out::println);
+        this.tarefasPorPrioridade.stream()
+                .sorted()
+                .forEach(System.out::println);
         System.out.println("========================");
     }
 
@@ -94,5 +107,14 @@ public class GerenciadorDeTarefas {
        this.set_de_Categorias = this.listaDeTarefas.stream()
                                 .map(Tarefa::getCategoria)
                                 .collect(Collectors.toSet());
+    }
+
+    private void adicionar_tarefa_sem_repeticao(Tarefa tarefa) {
+        if (tarefa != null && !this.tarefasPorPrioridade.contains(tarefa)) {
+            this.tarefasPorPrioridade.add(tarefa);
+            System.out.println("\nTarefa não existente adicionada!");
+            return;
+        }
+        System.out.println("\nTarefa já existente!");
     }
 }
