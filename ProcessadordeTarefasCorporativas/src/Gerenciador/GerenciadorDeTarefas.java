@@ -33,7 +33,8 @@ public class GerenciadorDeTarefas {
         this.tarefasPorPrioridade.add(tarefa);
 
         persistencia.salvar(this.listaDeTarefas);
-        System.out.println("Tarefa adicionada com sucesso!");
+
+        System.out.println("\nTarefa adicionada com sucesso!");
     }
 
     public void remove(Tarefa tarefa) throws TarefaInvalidException, ErrorGeralExeception, IOException {
@@ -50,7 +51,8 @@ public class GerenciadorDeTarefas {
         atualizacao_da_Lista_de_Categoria();
 
         persistencia.salvar(this.listaDeTarefas);
-        System.out.println("Tarefa removida com sucesso!");
+
+        System.out.println("\nTarefa: \""+tarefa.getTitulo()+"\" removida com sucesso!");
     }
 
     public void remove(String nomeTarefa) throws TarefaInvalidException, IOException {
@@ -69,7 +71,8 @@ public class GerenciadorDeTarefas {
             atualizacao_da_Lista_de_Categoria();
 
             persistencia.salvar(this.listaDeTarefas);
-            System.out.println("Tarefa: \""+nomeTarefa+ "\" removida com sucesso!");
+
+            System.out.println("\nTarefa: \""+nomeTarefa+ "\" removida com sucesso!");
         }else {
             throw new TarefaInvalidException("Referência de Tarefa inválida!");
         }
@@ -82,7 +85,9 @@ public class GerenciadorDeTarefas {
         }
 
         System.out.println("\n");
+        System.out.println("=== Lista de Tarefas ===");
         this.tarefasPorPrioridade.forEach(System.out::println);
+        System.out.println("========================");
     }
 
     private void atualizacao_da_Lista_de_Categoria() {

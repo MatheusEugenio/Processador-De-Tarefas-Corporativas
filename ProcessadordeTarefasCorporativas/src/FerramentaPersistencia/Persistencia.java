@@ -22,7 +22,7 @@ public class Persistencia<T>{
             throw new TarefaInvalidException("Lista vazia, nada para salvar!");
         }
 
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(this.caminho, true))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(this.caminho))){
             for (T tarefa : tarefas) {
                 writer.write(tarefa.toString());
                 writer.newLine();
