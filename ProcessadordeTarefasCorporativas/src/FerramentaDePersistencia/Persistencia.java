@@ -5,9 +5,9 @@ import Exceptions.TarefaInvalidException;
 import ObjetoDeManipulacao.Tarefa;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Queue;
-import java.util.function.Function;
 
 public class Persistencia<T>{
 
@@ -29,7 +29,7 @@ public class Persistencia<T>{
             writer.newLine();
 
             for (T tarefa : tarefas) {
-                writer.write(tarefa.toString());
+                writer.write(tarefa.toString() +" -> "+ LocalDate.now());
                 writer.newLine();
             }
             writer.flush();
@@ -71,6 +71,12 @@ public class Persistencia<T>{
     private Tarefa parseTarefa(String linha) throws TarefaInvalidException,ErrorGeralExeception{
         if (linha == null || linha.isBlank()){
             return null;
+        }
+
+        int indice_do_separador = linha.indexOf("->");
+
+        if (indice_do_separador != -1){
+            linha = linha.substring(0,indice_do_separador);
         }
 
         String[] linha_quebrada = linha.split("\\|");
