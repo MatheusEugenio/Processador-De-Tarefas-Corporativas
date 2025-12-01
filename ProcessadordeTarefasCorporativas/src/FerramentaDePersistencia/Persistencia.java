@@ -68,9 +68,6 @@ public class Persistencia<T>{
         }
     }
 
-    public void carregar(Function<String, T> conversor, List<Tarefa> lista){
-    }
-
     private Tarefa parseTarefa(String linha) throws TarefaInvalidException,ErrorGeralExeception{
         if (linha == null || linha.isBlank()){
             return null;
