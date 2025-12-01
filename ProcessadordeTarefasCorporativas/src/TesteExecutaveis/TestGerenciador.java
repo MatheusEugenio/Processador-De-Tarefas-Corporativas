@@ -25,22 +25,22 @@ public class TestGerenciador {
             ger.add(tarefa5);
             ger.add(tarefa6);
 
-            ger.exibirLista();
+            ger.exibirTarefas();
 
             ger.add(tarefa5);
             ger.add(tarefa4);
             ger.add(tarefa4);
 
-            ger.exibirLista();
+            ger.exibirTarefas();
 
             ger.remove(tarefa1);
             ger.remove(tarefa2);
 
-            ger.exibirLista();
+            ger.exibirTarefas();
 
             ger.add(tarefa1);
 
-            ger.exibirLista();
+            ger.exibirTarefas();
 
             //ger.remove("Fazer Compra");
             //ger.remove(" ");
@@ -48,7 +48,7 @@ public class TestGerenciador {
             Tarefa tarefa7 = new Tarefa(" ", "", "  ");
             ger.add(tarefa7);
 
-            ger.exibirLista();
+            ger.exibirTarefas();
 
         } catch (TarefaInvalidException e){
             System.out.println("ERRO DE TAREFA: "+ e.getMessage());

@@ -5,11 +5,9 @@ import Exceptions.TarefaInvalidException;
 import ObjetoDeManipulacao.Tarefa;
 
 import java.io.*;
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class Persistencia<T>{
 
@@ -39,7 +37,7 @@ public class Persistencia<T>{
 
     }
 
-    public void carregar(List<Tarefa> lista) throws IOException {
+    public void carregar(List<Tarefa> lista_principal, Queue<Tarefa> lista_de_prioridade) throws IOException {
         File file = new  File(this.caminho);
         if (!file.exists()){
             if (file.createNewFile()) {
@@ -57,7 +55,8 @@ public class Persistencia<T>{
                 try{
                     Tarefa tarefa_Nova = parseTarefa(linha);
                     if (tarefa_Nova != null) {
-                        lista.add(tarefa_Nova);
+                        lista_principal.add(tarefa_Nova);
+                        lista_de_prioridade.add(tarefa_Nova);
                     }
                 }catch (TarefaInvalidException e){
                     System.out.println("Erro ao passar a Tarefa para a lista!");

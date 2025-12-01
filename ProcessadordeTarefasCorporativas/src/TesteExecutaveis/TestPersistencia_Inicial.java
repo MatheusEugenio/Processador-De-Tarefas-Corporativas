@@ -16,7 +16,7 @@ public class TestPersistencia_Inicial {
             Tarefa tarefa5 = new Tarefa("Sair", "Noturna", "Alta");
             Tarefa tarefa6 = new Tarefa("Comprar a janta", "Noturna", "Alta");
 
-            ger.exibirLista();
+            ger.exibirTarefas();
 
             ger.add(tarefa1);
             ger.add(tarefa2);
@@ -25,16 +25,12 @@ public class TestPersistencia_Inicial {
             ger.add(tarefa5);
             ger.add(tarefa6);
 
-            ger.exibirLista();
+            ger.exibirTarefas();
 
             ger.remove(tarefa1);
             ger.remove(tarefa3);
 
-            ger.exibirLista();
-            /*
-
-             */
-
+            ger.exibirTarefas();
 
         }catch (Exception e){
             System.out.println(e.getMessage());
