@@ -104,8 +104,7 @@ public class GerenciadorDeTarefas implements MethodsMenager{
         }
 
         System.out.println("\n=== Lista de Tarefas ===");
-        this.tarefasPorPrioridade.forEach(System.out::println);
-        //this.listaDeTarefas.forEach(System.out::println);
+        this.listaDeTarefas.forEach(System.out::println);
         System.out.println("========================");
     }
 
