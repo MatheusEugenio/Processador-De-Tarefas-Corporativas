@@ -7,6 +7,7 @@ import ObjetoDeManipulacao.Tarefa;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 
 public class Persistencia<T>{
@@ -46,18 +47,18 @@ public class Persistencia<T>{
         }
 
         try(BufferedReader reader = new BufferedReader(new FileReader(this.caminho))){
-
             String linha;
             while((linha = reader.readLine()) != null){
                 if (linha.trim().isEmpty()){
                     continue;
                 }
+
                 try{
-                    Tarefa tarefa_Nova = parseTarefa(linha);
-                    if (tarefa_Nova != null) {
-                        lista_principal.add(tarefa_Nova);
-                        lista_de_prioridade.add(tarefa_Nova);
-                    }
+                    Optional<Tarefa> tarefa_Optional = parseTarefa(linha);
+                    tarefa_Optional.ifPresent(tarefa_nova -> {
+                        lista_principal.add(tarefa_nova);
+                        lista_de_prioridade.add(tarefa_nova);
+                    });
                 }catch (TarefaInvalidException e){
                     System.out.println("Erro ao passar a Tarefa para a lista!");
                 }
@@ -68,9 +69,9 @@ public class Persistencia<T>{
         }
     }
 
-    private Tarefa parseTarefa(String linha) throws TarefaInvalidException,ErrorGeralExeception{
+    private Optional<Tarefa> parseTarefa(String linha) throws TarefaInvalidException,ErrorGeralExeception{
         if (linha == null || linha.isBlank()){
-            return null;
+            return Optional.empty();
         }
 
         int indice_do_separador = linha.indexOf("->");
@@ -90,10 +91,10 @@ public class Persistencia<T>{
         String prioridade_da_tarefa_quebrada = linha_quebrada[2].trim();
 
         if (!titulo_da_tarefa_quebrada.isEmpty() && !categoria_da_tarefa_quebrada.isEmpty() && !prioridade_da_tarefa_quebrada.isEmpty()) {
-            return new Tarefa(titulo_da_tarefa_quebrada, categoria_da_tarefa_quebrada, prioridade_da_tarefa_quebrada);
+            return Optional.of(new Tarefa(titulo_da_tarefa_quebrada, categoria_da_tarefa_quebrada, prioridade_da_tarefa_quebrada));
         }
 
-        throw new TarefaInvalidException("Erro ao criar e retornar, algum atributo da Tarefa falhou!");
+        return Optional.empty();
     }
 
 }
